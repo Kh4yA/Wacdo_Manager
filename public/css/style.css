@@ -1,0 +1,334 @@
+/*** IMPORT FONT ***/
+@font-face {
+    font-family: "Source Sans Pro regular";
+    src: url("../source-sans-pro/SourceSansPro-Regular.otf") format("truetype");
+  }
+  @font-face {
+    font-family: "Source Sans Pro bold";
+    src: url("../source-sans-pro/SourceSansPro-Bold.otf") format("truetype");
+  }
+  @font-face {
+    font-family: "Source Sans Pro semibold";
+    src: url("../source-sans-pro/SourceSansPro-Semibold.otf") format("truetype");
+  }
+/*** ROOT ***/
+:root{
+
+    --black-color: #292929;
+    --grey-ligth: #d6d6d6;
+    --red-color: #bd0017;
+    --yellow-color: #ffc836;
+    --white-color: #f1f1f1;
+    --font-primary-regular: "Source Sans Pro regular";
+    --font-primary-bold: "Source Sans Pro bold";
+    --font-primary-semibold: "Source Sans Pro semibold";
+}
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--grey-ligth);
+}
+/*** MINI RESET ***/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  a{
+    text-decoration: none;
+  }
+  body {
+    font-family: var(--font-primary-regular);
+  }
+  /*** GENERALITE ***/
+  .width100 {
+    width: 100%;
+  }
+  .width40 {
+    width: 40%;
+  }
+  .padding20px {
+    padding: 20px;
+  }
+  .padding-bottom {
+    padding-bottom: 20%;
+  }
+  .padding-bottom20px {
+    padding-bottom: 20px;
+  }
+  .margin-autoLR {
+    margin: 0 auto;
+  }
+  .margin-bottom5 {
+    margin-bottom: 5%;
+  }
+.margin-bottom10px{
+  margin-bottom: 10px;
+}
+  .font-size42px {
+    font-size: 42px;
+  }
+  .flex {
+    display: flex;
+  }
+  .flex-wrap{
+    flex-wrap: wrap;
+  }
+  .justify-center {
+    justify-content: center;
+  }
+  .space-between {
+    justify-content: space-between;
+  }
+  .space-arround {
+    justify-content: space-around;
+  }
+  .item-center {
+    align-items: center;
+  }
+  .align-content-space-arround {
+    align-content: space-around;
+  }
+  .gap20px {
+    gap: 20px;
+  }
+  .deconnexion{
+    padding: 5px 16px;
+    border: 1px solid var(--red-color);
+    display: block;
+    margin: 0;
+    border-radius: 8px;
+  }
+  .choice{
+    padding: 5px 16px;
+    border: 1px solid var(--black-color);
+    background-color: var(--white-color);
+    display: block;
+    margin: 0;
+    text-align: center;
+    min-width: 100px;
+    max-width: 350px;
+    max-height: fit-content;
+    border-radius: 8px;
+  }
+  .active{
+    background-color: var(--yellow-color);
+    border: 3px  solid var(--yellow-color);
+  }
+  .error, h1, p{
+    text-align: center;
+  }
+  .error h1{
+    font-size: 48px;
+  }
+  .error p{
+    font-size: 24px;
+  }
+  .error{
+    position: relative;
+   margin-top: 30vh;
+  }
+  .bg-error{
+    position: absolute;
+    z-index: -1;
+    top: 10%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    font-size: 15em;
+    font-weight: 900;
+    color: #bd001618;
+    transform: rotate(40deg);
+    margin-top: 30vh;
+  }
+  .error-connexion p{
+    margin: 20px;
+    color: #bd0017;
+  }
+dialog{
+  width: 50%;
+  height: fit-content;
+  margin: auto;
+  padding: 50px 20px;
+}
+dialog form{
+width: 100%;
+}
+.close-modal{
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 35px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+.color-red{
+  color: var(--red-color);
+  font-size: 28px;
+  font-weight: 900;
+}
+.line {
+  width: calc(100% - 40px);
+  height: 1px;
+  margin: 0 auto;
+  background-color: var(--black-color);
+}
+/************** HEADER *********/
+header{
+    width: 100%;
+    height: 10vh;
+    padding: 20px;
+    background-color: var(--white-color);
+    border-bottom:1px solid var(--black-color);
+}
+.box-logo-title{
+    width: 20%;
+}
+.box-logo-title p{
+    font-family: var(--font-primary-bold);
+    font-size: 2rem;
+    font-weight: 700;
+}
+/************ CONNEXION MAIN **************/
+main{
+    padding: 20px
+}
+.connexion-main{
+    width: 100%;
+    height: calc(90vh - 40px);
+    background-color: var(--white-color);
+    flex-direction: column;
+}
+.connexion-main form{
+    padding: 10%;
+}
+.connexion-main form input{
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border: 1px solid var(--black-color);
+}
+.connexion-main form div{
+    width: 50%;
+    margin: 0 auto;
+}
+.connexion-main form label{
+    display: inline-block;
+    min-width: 200px;
+    padding: 10px;
+    font-size: 25px;
+    text-align: left;
+}
+button{
+    padding: 10px 32px;
+    font-size: 18px;
+    background-color: var(--grey-ligth);
+    border: none;
+    margin-top: 30px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+/************** VIEW ADMIN *************/
+.product-container{
+  height: calc(90vh - 8vh - 40px - 20px);
+  padding: 20px;
+  width: calc(60% - 5px);
+  margin-right: 5px;
+  background-color: var(--white-color);
+  border: 1px solid var(--black-color)
+}
+.user-container{
+  height: calc(90vh - 4vh - 40px - 10px);
+  padding: 20px;
+  width: calc(60% - 5px);
+  margin-right: 5px;
+  background-color: var(--white-color);
+  border: 1px solid var(--black-color)
+
+}
+.form-container-user{
+  height: calc(90vh - 4vh - 40px - 10px);
+  width: calc(40% - 5px);
+  padding: 20px;
+  background-color: var(--white-color);
+  border: 1px solid var(--black-color)
+
+}
+.form-container{
+  height: calc(90vh - 8vh - 40px - 20px);
+  width: calc(40% - 5px);
+  padding: 20px;
+  background-color: var(--white-color);
+  border: 1px solid var(--black-color)
+}
+.choice-admin, .choice-category{
+  height: 4vh;
+  margin: 0 0 10px 0;
+  width: 100%;
+}
+table{
+  border-collapse: collapse;
+  border: 1px solid var(--black-color);
+  width: 100%;
+}
+thead{
+  background-color: var(--black-color);
+  color: var(--white-color);
+}
+th, td{
+  padding: 5px;
+  border: 1px solid var(--black-color);
+  text-align: center;
+}
+tbody tr:hover{
+  background-color: var(--grey-ligth);
+  cursor: pointer;
+}
+/*form*/
+form{
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+}
+form div{
+  width: 100%;
+}
+form input, textarea{
+  width: calc(100% - 120px);
+  padding: 10px;
+}
+form label{
+  max-width: 100px;
+  width: 100%;
+  display: inline-block;
+}
+form select{
+  width: 20%;
+  padding: 10px;
+}
+.box-picture{
+  width: calc(100% - 120px);
+  height: 10vh;
+  padding: 10px;
+  border: 1px solid var(--black-color);
+}
+.box-picture .image{
+  width: 50%;
+  height: auto;
+}
+.box-picture .image img{
+max-height: 100%;
+height: auto;
+object-fit: contain;
+}
+/***************** EQUIPIER CONTAINER **********************/
+iframe{
+  background:var(--white-color);
+  width: calc(100vw - 40px);
+  height: calc(90vh - 40px);
+}
