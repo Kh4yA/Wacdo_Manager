@@ -44,9 +44,12 @@ $router->register('/addUser', [AdminController::class, 'addNewUser']);
 $router->register('/interface_manager', [ManagerController::class, 'displayInterfaceManager']);
 
 $router->register('/interface_equipier', [EquipierController::class, 'displayInterfaceEquipier']);
-$router->register('/newOrder', [EquipierController::class, 'newOrder']);
 $router->register('/cartOrder', [EquipierController::class, 'createOrder']);
 $router->register('/addOrderDetails', [EquipierController::class, 'addOrderDetails']);
+$router->register('/getJsonOrderDetails', [EquipierController::class, 'getJsonOrderDetails']);
+$router->register('/deleteOrderDetail', [EquipierController::class, 'deleteOrderDetail']);
+$router->register('/validateOrder', [EquipierController::class, 'validateOrder']);
+$router->register('/abandonOrder', [EquipierController::class, 'abandonOrder']);
 
 $router->register('/test', [TestController::class, 'testControl']);
 

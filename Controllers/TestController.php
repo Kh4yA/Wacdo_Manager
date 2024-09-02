@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Orders;
 use App\Models\Products;
 use App\Models\Categories;
+use App\Models\Detail_order;
+use App\Controllers\BaseController;
 
 class TestController extends BaseController
 {
@@ -12,6 +15,10 @@ class TestController extends BaseController
     protected $product;
     protected $categories;
     protected $user;
+    protected $products;
+    protected $orders;
+    protected $detail_order;
+    protected $orderCurrent;
 
     function __construct()
     {
@@ -23,12 +30,18 @@ class TestController extends BaseController
         }
         if ( $this->user === null){
             $this->user = new User();
+            $this->products = new Products();
+            $this->categories = new Categories();
+            $this->orders = new Orders();
+            $this->detail_order = new Detail_order();
+    
         }
     }
     public function testControl()
     {
         echo '<pre>';   
-        $user = $this->user->load(1);
+        $idOrder = $this->detail_order->showOrderDetail('orderXQN');
+        $order = $this->orders->loadWithOrderNumber('orderKC1');
         echo '</pre>';
     }
 }

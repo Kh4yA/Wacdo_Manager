@@ -5,6 +5,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use Exception;
+
 use App\Models\Orders;
 
 use App\Models\Categories;
@@ -19,7 +21,6 @@ class EquipierController extends BaseController
     protected $products;
     protected $orders;
     protected $detail_order;
-    protected $orderCurrent;
 
     function __construct()
     {
@@ -29,6 +30,9 @@ class EquipierController extends BaseController
         $this->detail_order = new Detail_order();
     }
 
+    /**
+     * construit  la page d'accueil de l'equipier
+     */
     public function displayInterfaceEquipier()
     {
         $this->ensureStatus('EQUIPIER');
@@ -49,53 +53,192 @@ class EquipierController extends BaseController
      */
     public function generateOrderId()
     {
+        $this->ensureStatus('EQUIPIER');
         // Génère une chaîne de 3 caractères alphanumériques aléatoires
         $randomString = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
         return 'order' . $randomString;
     }
     /**
-     * creer un json qui va detailler la commande dans le panier
+     * creer une nouvelle commande et ajoute le statut en cours
+     *@return string chaine de caractere au format json
      */
     public function createOrder()
     {
+        $this->ensureStatus('EQUIPIER');
         $orderId = $this->generateOrderId();
-        $this->orderCurrent = $orderId;
         $order = new Orders();
+        $_SESSION["order"] = $orderId;
         $order->set('number_order', $orderId);
-        $order->set('statut', 'EN COURS');
+        $order->set('statut', 'EN COURS DE COMMANDE');
         $order->insert();
         return json_encode($orderId);
     }
     /**
-     * Ajouter les detail de la commande
-     *  @param array $data
+     * Ajouter les detail de la commande et insert en basse de donnée
      */
     public function addOrderDetails()
     {
-        // Récupérer le contenu JSON envoyé par la requête POST
-        $inputJSON = file_get_contents('php://input');
-        $input = json_decode($inputJSON, TRUE); // Décoder la chaîne JSON en tableau associatif
-        if (isset($input['number_order'])) {
-            $number_order = $input['number_order'];
-            // Traiter le reste des détails de la commande ici...
-
-            // Par exemple, insérer les détails dans la base de données
-            // ...
-
-            // Retourner une réponse JSON
-            echo json_encode(['status' => 'success', 'message' => 'Commande ajoutée avec succès']);
-        } else {
-            // Gérer les cas où les données sont manquantes ou incorrectes
-            echo json_encode(['status' => 'error', 'message' => 'Données de commande manquantes']);
+        $this->ensureStatus('EQUIPIER');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(200);
+            exit;
         }
-        print_r($_POST);
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        try {
+            if (json_last_error() === JSON_ERROR_NONE) {
+                if (!isset($input['id_order']) || empty($input['id_order'])) {
+                    throw new Exception('id_order est null ou vide');
+                }
+                $detailOrder = new Detail_order();
+                $idOrder = $this->orders->getIdWithOrderNumber($input['id_order']);
+                $_SESSION["order"] = $input['id_order'];
+                if (!isset($idOrder)) {
+                    throw new Exception('l\'id réccupéré est invalide');
+                }
+                if ($detailOrder->loadFromTab($input)) {
+                    $detailOrder->set('id_order', $idOrder);
+                    if ($detailOrder->insert()) {
+                        echo json_encode(['status' => 'success', 'message' => 'Données reçues', 'donnée' => $input]);
+                    } else {
+                        throw new Exception('insertion echoué en base de donnée');
+                    }
+                } else {
+                    throw new Exception('echec du chargement des données');
+                }
+            } else {
+                throw new Exception('JSON recu invalide: ' . json_last_error_msg());
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            error_log('Error: ' . $e->getMessage());
+        }
+    }
+    /**
+     * Role  de la fonction : creer un json du detail de la commande pour le reccuperer en js
+     *  @return json
+     */
+    public function getJsonOrderDetails()
+    {
+        $this->ensureStatus('EQUIPIER');
         $detailOrder = new Detail_order();
-        print_r($this->orderCurrent);
-        die();
-        $detailOrder->set('id_order', $this->orderCurrent);
-        // $detailOrder->set('product_id', $data['product_id']);
-        // $detailOrder->set('quantity', $data['quantity']);
-        // $detailOrder->set('price', $data['price']);
-        $detailOrder->insert();
+        $detailOrder = $this->detail_order->showOrderDetail($_SESSION["order"]);
+        $json = array();
+        foreach ($detailOrder as $key => $value) {
+            $json[$key] = $value;
+        }
+        return json_encode($json);
+    }
+    /**
+     * Role : supprime un element de la bdd envoyer par l'ajax
+     * @param int $id (id du produit a spprimer)
+     */
+    public function deleteOrderDetail()
+    {
+        $this->ensureStatus('EQUIPIER');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        try {
+            if (isset($input['id'])) {
+                $id = $input['id'];
+                $detailOrder = new Detail_order($id);
+                if ($detailOrder->delete()) {
+                    echo json_encode(["status' => 'success', 'message' => 'l\'element a l\'id $id a éte supprimé"]);
+                } else {
+                    throw new Exception('echec de la suppression');
+                }
+            } else {
+                throw new Exception('id manquant');
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+    /**
+     * Role : valider la commande (au clixk sur le bouton payer on passe la commande au statut 'en preparation' et on ajoute la somme de la commande )
+     */
+    public function validateOrder()
+    {
+        $this->ensureStatus('EQUIPIER');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(['status' => 'error', 'message' => 'Erreur de décodage JSON : ' . json_last_error_msg()]);
+            return;
+        }
+
+        try {
+            if (isset($input['price'])) {
+                $order = new Orders();
+                $order->loadWithOrderNumber($_SESSION['order']);
+                $number_order = $_SESSION['order'];
+                $order->set('statut', 'EN PREPARATION');
+                $order->set('price', $input['price']);
+                if ($order->update()) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'La commande a été validée',
+                        'order' => $number_order,
+                        'etat' => "L'état est passé à 'EN PREPARATION'"
+                    ]);
+                } else {
+                    throw new Exception('Échec de la validation');
+                }
+            } else {
+                throw new Exception('Price manquant');
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+    /**
+     * role : abandonner une commande
+     */
+    public function abandonOrder()
+    {
+        $this->ensureStatus('EQUIPIER');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(['status' => 'error', 'message' => 'Erreur de décodage JSON : ' . json_last_error_msg()]);
+            return;
+        }
+        try {
+            if (isset($input['order'])) {
+                $order = new Orders();
+                $order->loadWithOrderNumber($input['order']);
+                $number_order = $input['order'];
+                $order->set('statut', 'ABANDONNER');
+                if ($order->update()) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'La commande a été abandonnée',
+                        'order' => $number_order,
+                        'etat' => "L'état est passé à 'ABANDONNER'"
+                    ]);
+                } else {
+                    throw new Exception('Échec de l\'abandon');
+                }
+            } else {
+                throw new Exception('Order manquant');
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 }
