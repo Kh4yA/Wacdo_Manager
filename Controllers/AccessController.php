@@ -9,19 +9,26 @@ use App\Source\RedirectToRoute;
 use App\Utils\Session;
 
 /**
- * Classe qui gere le controle d'acces
- *  */
+ * Classe qui gère le contrôle d'accès aux fonctionnalitées de l'application
+ */
 class AccessController extends BaseController
 {
     protected $user;
-    protected $error;
 
 
+    /**
+     * Constructeur de la classe
+     * Initialise les instances de User et RouteNotFound
+     */
     function __construct()
     {
         $this->user = new User();
-        $this->error = new RouteNotFound();
     }
+    /**
+     * Vérifie la connexion de l'utilisateur et gère les redirections en fonction de son statut
+     * @return mixed La réponse de la redirection ou le rendu de la vue de connexion
+     * @throws ErrorConnexion Si les informations de connexion sont invalides
+     */
     function verify_connexion()
     {
         // on verifie si un utilisateur n'est pas deja connecter
@@ -43,7 +50,8 @@ class AccessController extends BaseController
         return $this->redirectToRoute("/");
     }
     /**
-     * deconnecte l'utilisateur
+     * Déconnecte l'utilisateur en détruisant la session
+     * @return mixed La réponse de la redirection
      */
     function deconnexion()
     {

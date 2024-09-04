@@ -9,6 +9,21 @@ class Orders extends _Model
     protected $table = 'orders';
     protected $fields = ["id", "number_order", "date", "statut", "user_id", "price"];
     /**
+     * role verifie qu'un numero de commande existe pas
+     *  @param string $number_order
+     */
+    public function existe($number_order)
+    {
+        $sql = "SELECT * FROM `orders` WHERE `number_order` = :number_order";
+        $param = [":number_order"=>$number_order];
+        global $bdd;
+        $req = $bdd->fetch($sql, $param);
+        if($req){
+            return true;
+        }
+        return false;
+        }
+    /**
      * role : retourner l'id avex le numero de commande en parametre
      * @return string id de la commande
      */

@@ -12,6 +12,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="icon" href="/public/wacdo/images/logo.png" type="image/png">
+
     <script src="/public/js/app.js" defer></script>
 
     <title>Admin</title>
@@ -30,8 +32,10 @@
         <div class="choice-category flex justify-center item-center gap20px">
             <?php
             foreach ($listeCategories as $category) {
-            ?>
-                <a class="<?= (explode('/', $_SERVER['REQUEST_URI'])[2] !== $category->get('label')) ? ' choice' : 'active choice' ?> " href="/admin_produit/<?= htmlspecialchars($category->get('label')) ?>">
+                $uri = isset($_SERVER['REQUEST_URI']) ? explode('/', $_SERVER['REQUEST_URI']) : [];
+                $categoryCurrent = isset($uri[2]) ? $uri[2] : "";
+                            ?>
+                <a class="<?= $categoryCurrent !== $category->get('label') ? ' choice' : 'active choice' ?> " href="/admin_produit/<?= htmlspecialchars($category->get('label')) ?>">
                     <?= htmlspecialchars($category->get('label')) ?>
                 </a>
             <?php

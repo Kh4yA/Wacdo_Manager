@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../../public/css/style.css">
+    <link rel="icon" href="/public/wacdo/images/logo.png" type="image/png">
+
     <script src="/public/js/interfaceEquipier.js" defer></script>
     <title>Interface equipier</title>
 </head>
@@ -13,7 +15,12 @@
     <?php include "templates/fragments/header.php" ?>
     <main class="flex space-between flex-wrap">
         <!-- Gestion des choix produits ou utilisateurs -->
-        <div class="equipier-container flex space-between">
+        <div class="equipier-container flex space-between flex-wrap">
+            <!-- choix interface -->
+            <div class="choice-interface-equipier flex flex-wrap item-center justify-center">
+                <a class="choice" href="/commandes">Toutes le commandes</a>
+                <a class="choice" href="/interface_equipier">Passer une commande</a>
+            </div>
             <div class="choice-categorie-equipier flex item-center">
                 <?php
                 /*
@@ -82,6 +89,7 @@
                 ?>
             </div>
         </div>
+        <!-- cart -->
         <div class="cart-container">
             <div class="cart-header">
                 
@@ -109,7 +117,6 @@
                 <div class="flex space-between item-center padding20px">
                     <div>
                         <p><b>TOTAL (ttc)</b></p>
-
                     </div>
                     <div class="price">
                         <!-- 
@@ -117,13 +124,14 @@
                         -->
                     </div>
                 </div>
-                <div class="cart-btn flex space-between">
+                <div class="statut d-none">
+                <p>PAYÉ</p>
+                </div>
+                <div class="cart-btn flex space-between flex-wrap">
                     <button class="btn-second clear" id="abandon">Abandon</button>
                     <button class="btn-first" id="pay">Payer</button>
-                    <button class="btn-first" id="livrer">livrer</button>
                 </div>
             </div>
-
         </div>
     </main>
 </body>

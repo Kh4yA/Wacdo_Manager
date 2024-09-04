@@ -95,6 +95,9 @@ body{
   .gap20px {
     gap: 20px;
   }
+  .d-none{
+    display: none;
+  }
   .deconnexion{
     padding: 5px 16px;
     border: 1px solid var(--red-color);
@@ -327,13 +330,20 @@ height: auto;
 object-fit: contain;
 }
 /***************** EQUIPIER CONTAINER **********************/
-.equipier-container{
+.equipier-container, .manager-container{
   height: calc(90vh - 40px);
   padding: 20px;
   width: calc(70% - 5px);
   margin-right: 5px;
   background-color: var(--white-color);
   border: 1px solid var(--black-color)
+}
+.choice-interface-equipier{
+  width: 100%;
+  height: 8%;
+  gap: 20px;
+  background-color: var(--grey-ligth);
+
 }
 .cart-container{
   position: relative;
@@ -348,15 +358,16 @@ object-fit: contain;
   flex-direction: column;
   gap: 10px;
   width: calc(20% - 10px);
-  height: 100%;
+  height: 90%;
   background-color: var(--grey-ligth);
 }
 .choice-products-equipier{
   padding: 20px;
   width: calc(80% - 10px);
   gap: 12px;
-  height: 100%;
+  height: 90%;
   background-color: var(--grey-ligth);
+  overflow: scroll;
 }
 .card-product-equipier{
   flex-direction: column;
@@ -378,6 +389,8 @@ object-fit: contain;
   height: auto;
   object-fit: contain;
 }
+/*********** MANAGER CONTAINER ****************/
+
 /************ MODAL **********/
 .dialog-menu{
   width: 60%;
@@ -387,6 +400,7 @@ object-fit: contain;
   background-color: var(--grey-ligth);
   padding: 10px;
   margin: 5px;
+  overflow: scroll;
 }
 .card{
   width: 100px;
@@ -426,8 +440,83 @@ object-fit: contain;
 .menu ul{
   margin-left: 30px;
 }
-iframe{
-  background:var(--white-color);
-  width: 80vw;
-  height: calc(90vh - 40px);
+/* MEDIA */
+@media screen and (max-width: 900px) {
+  .cart-btn button{
+    margin: 5px;
+    padding: 10px;
+  }
+  .font-size42px{
+    font-size: 24px;
+  }
+  header{
+    flex-wrap: wrap;
+    padding: 5px;
+  }
+  header div:nth-child(2){
+    flex-wrap: wrap;
+    width: 50%;
+    justify-content: center;
+  }
+  .order-info{
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .order-number{
+    padding:10px 5px;
+  }
+  .choice-categorie-equipier{
+    width: 100%;
+    flex-direction: row;
+    overflow: scroll;
+    height: 10vh;
+    margin: 10px 0;
+  }
+  .choice-products-equipier{
+    width: 100%;
+    height: 70vh;
+  }
+  .equipier-container{
+    flex-wrap: wrap;
+  }
+  .logo-cart{
+    width: 50px;
+    flex-direction: column-reverse;
+  }
+  .logo-cart img{
+    margin: 0 auto;
+  }
+  .new-order{
+    width: 100%;
+    font-size: 12px;
+    padding: 5px;
+  }
+  .menu p{
+    width: 100%;
+  }
+  .cart-container{
+    padding: 5px;
+  }
+  .cart-header{
+    height: 20vh;
+  }
+  .order-content{
+    height: 40vh;
+  }
+  .order-price{
+    font-size: 12px;
+    height: 20vh;
+  }
+  .price{
+    width: 10%;
+  }
+  .order-price div:nth-child(2){
+    background-color: #7da555;
+    width: 100%;
+    padding: 5px;
+  }
+  .order-price button{
+    padding: 5px;
+    font-size: 14px;
+  }
 }

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./../../public/css/style.css">
     <link rel="icon" href="/public/wacdo/images/logo.png" type="image/png">
 
-    <script src="/public/js/interfaceManager.js" defer></script>
+    <script src="/public/js/equipierOrder.js" defer ></script>
     <title>Interface manager</title>
 </head>
 
@@ -21,6 +21,12 @@
     <main class="flex space-between flex-wrap">
         <!-- Gestion des choix produits ou utilisateurs -->
         <div class="manager-container">
+            <!-- choix interface -->
+            <div class="choice-interface-equipier flex flex-wrap item-center justify-center">
+                <a class="choice" href="/commandes">Toutes le commandes</a>
+                <a class="choice" href="/interface_equipier">Passer une commande</a>
+            </div>
+            <!-- gestion des commandes -->
             <table>
                 <thead>
                     <th>n° commande</th>
@@ -33,7 +39,7 @@
                         <tr>
                             <td><?= $order['number_order'] ?></td>
                             <td><?= $order['date'] ?></td>
-                            <td><a href="/interface_manager/detail/<?= $order['number_order'] ?>">detail</a></td>
+                            <td><a href="/commande/detail/<?= $order['number_order'] ?>">detail</a></td>
                             <td><?= $order['statut'] ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -52,7 +58,7 @@
                             <p>Commande numéro</p>
                         </div>
                         <div>
-                            <p> <span class="font-size42px"><?php isset($orderCurrent) ? $orderCurrent->get('number_order') : '' ?></span></p>
+                            <p> <span class="font-size42px"><?=isset($orderCurrent) ? $orderCurrent->get('number_order') : ""?></span></p>
                         </div>
                     </div>
                 </div>
@@ -62,33 +68,31 @@
                 <!-- Menu -->
                 <div class="menu padding-bottom20px">
                     <?php
-                    if (!empty($detailOrder)) {
-                        foreach ($detailOrder as $order) {
-                            // Sépare la chaîne de caractères en mots
-                            $words = explode(" ", $order['libelle_product']);
-
-                            // Vérifie si le premier mot est 'Menu'
-                            if ($words[0] === 'Menu') {
+                    if(isset($detailOrder)){
+                    foreach ($detailOrder as $order) {
+                        if (explode(" ", $order['libelle_product'][0]) === 'Menu') {
                     ?>
-                                <div class="menu-item flex space-between padding-bottom20px">
-                                    <div class="flex item-center space-between flex-wrap">
-                                        <h3 class=" width100"><?= $order['quantite'] ?> <?= ($order['size'] === 'BEST_OF') ? 'best of' : 'maxi best of'?> <?= $order['libelle_product'] ?></h3>
-                                        <ul>
-                                            <li><?= $order['libelle_side'] ?></li>
-                                            <li><?= $order['libelle_boisson'] ?></li>
-                                        </ul>
-                                    </div>
+                            <div class="menu-item flex space-between padding20px">
+                                <div class="flex item-center space-between">
+                                    <h3><?= $order['quantite'] ?><?= $order['libelle_product'] ?></h3>
                                 </div>
-                            <?php
-                            } else {
-                            ?>
-                                <div class="flex item-center space-between padding-bottom20px">
-                                    <h3><?= $order['quantite'] ?> <?= $order['libelle_product'] ?></h3>
-                                </div>
-                    <?php
-                            }
+                                <ul>
+                                    <li><?= $order['libelle_side'] ?></li>
+                                    <li><?= $order['libelle_boisson'] ?></li>
+                                </ul>
+                            </div>
+                        <?php
+                        } else {
+                        ?>
+                            <div class="flex item-center space-between">
+                                <h3><?= $order['quantite'] ?> <?= $order['libelle_product'] ?></h3>
+                            </div>
+                        <?php
                         }
-                    }
+                        ?>
+
+                    <?php
+                    }}
                     ?>
                 </div>
                 <!-- Prix de la commande -->
@@ -99,17 +103,18 @@
                             <p><b>TOTAL (ttc)</b></p>
                         </div>
                         <div class="price">
-                            <p> <span class="font-size42px"><?= isset($orderCurrent) ? $orderCurrent->get('price') : '' ?></span></p>
+                            <p><span class="font-size42px"><?=isset($orderCurrent) ? $orderCurrent->get('price') : ""?></span></p>
                         </div>
                     </div>
                     <div class="statut d-none">
                         <p>PAYÉ</p>
                     </div>
                     <div class="cart-btn flex space-between flex-wrap">
-                        <button class="btn-first" id="prepare" data-order='<?= isset($orderCurrent) ? $orderCurrent->get('number_order') : '' ?>'>Préparer</button>
+                        <button class="btn-first" id="livre" data-number="<?=isset($orderCurrent) ? $orderCurrent->get('number_order') : ""?>">livrer</button>
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 </body>
 

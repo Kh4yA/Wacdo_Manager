@@ -242,7 +242,7 @@ async function construcTemplateItem(datas, category) {
         card.innerHTML = `
         <p>${elt.nom}</p>
         <div class="image-product-equipier">
-        <img src="/public/wacdo${elt.image}" alt=" photo d'un ${elt.nom}">
+        <img src="${elt.image}" alt=" photo d'un ${elt.nom}">
         </div>
         `;
         containerCardItem.appendChild(card);
@@ -304,6 +304,7 @@ async function construcTemplateItem(datas, category) {
         sendDataServer(menu)
         getDetailCommande()
         isOrderLaunched()
+        modelMenu.close()
     })
 }
 /**
@@ -318,11 +319,11 @@ function constructOrderInfo(data) {
     }
     orderInfo.innerHTML = `
         <div><p>Commande numéro</p></div>
-        <div><p><span class="font-size42px">${data}</span></p></div>
-    `;
+        <div><p><span class="font-size42px">${data}</span></p></div>    `;
 }
 //déclaration de la variable price pour reccuperer le prix
 let price = 0;
+let statutOrder= ""
 
 /**
  * Remplit les informations du panier
@@ -340,13 +341,15 @@ function constructContentOrder(datas = []) {
     if (datas.length > 0) {
         console.log('data n\'est pas vide');
         datas.forEach(data => {
+            console.log(data);
             // S'assurer que libelle_product est défini et non nul
             if (data.libelle_product) {
                 let str = data.libelle_product;
                 const str2 = str.split(' ');
                 // On gère le prix comme un nombre
                 let productPrice = parseFloat(data.price);
-
+                // on gerre le statut
+                statutOrder = data.statut;
                 
                 let orderItem = document.createElement('div');
                 if (str2[0] === 'Menu') {
@@ -404,13 +407,15 @@ function constructContentOrder(datas = []) {
 }
 
 // Gestion du bouton de pay
+const statutPay = document.querySelector('.statut')
 const btnPay = document.getElementById('pay');
 btnPay.addEventListener('click', () => {
     console.log("btn pay cliqué");
     if (order_num != "") {
         console.log(`order_num est rempli ${order_num}`);
         sendValidationOrder(price);
-        location.reload()
+        btnPay.classList.add('d-none')
+        statutPay.classList.remove('d-none')
     } else {
         console.log(`order_num est vide`);
     }
@@ -422,3 +427,4 @@ btnAbandon.addEventListener('click', () => {
     abandonOrder(order_num)
     location.reload()
     });
+

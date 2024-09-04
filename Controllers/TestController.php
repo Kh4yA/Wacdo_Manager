@@ -40,8 +40,9 @@ class TestController extends BaseController
     public function testControl()
     {
         echo '<pre>';   
-        $idOrder = $this->detail_order->showOrderDetail('orderXQN');
-        $order = $this->orders->loadWithOrderNumber('orderKC1');
-        echo '</pre>';
+        $detailOrder = $this->detail_order->showOrderWithFilter('PREPARE');
+        $orders = $this->orders->loadWithOrderNumber('orderFPS');
+        $listeCategories = $this->categories->listEtendue();
+            print_r($listeCategories);
     }
 }

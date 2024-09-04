@@ -42,19 +42,25 @@ $router->register('/modifUser/{id}', [AdminController::class, 'saveModifUser']);
 $router->register('/addUser', [AdminController::class, 'addNewUser']);
 
 $router->register('/interface_manager', [ManagerController::class, 'displayInterfaceManager']);
+$router->register('/interface_manager/detail/{number_order}', [ManagerController::class, 'displayOrderDetail']);
+$router->register('/readyOrder', [ManagerController::class, 'readyOrder']);
 
 $router->register('/interface_equipier', [EquipierController::class, 'displayInterfaceEquipier']);
+$router->register('/commandes', [EquipierController::class, 'displayOrderInterface']);
+$router->register('/commande/detail/{number_order}', [EquipierController::class, 'displayDetailOrder']);
 $router->register('/cartOrder', [EquipierController::class, 'createOrder']);
 $router->register('/addOrderDetails', [EquipierController::class, 'addOrderDetails']);
 $router->register('/getJsonOrderDetails', [EquipierController::class, 'getJsonOrderDetails']);
 $router->register('/deleteOrderDetail', [EquipierController::class, 'deleteOrderDetail']);
 $router->register('/validateOrder', [EquipierController::class, 'validateOrder']);
 $router->register('/abandonOrder', [EquipierController::class, 'abandonOrder']);
+$router->register('/deliveryOrder', [EquipierController::class, 'deliveryOrder']);
 
 $router->register('/test', [TestController::class, 'testControl']);
 
 $router->register('/API_wacdo_categories', [APIController::class, 'createAPICategories']);
 $router->register('/API_wacdo_produits', [APIController::class, 'createAPIProducts']);
+$router->register('/API_wacdo', [APIController::class, 'addOrderDetailsWacdo']);
 
 try{
     echo $router->resolve(($_SERVER['REQUEST_URI']));

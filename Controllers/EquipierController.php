@@ -31,7 +31,10 @@ class EquipierController extends BaseController
     }
 
     /**
-     * construit  la page d'accueil de l'equipier
+     * Affiche l'interface principale pour l'équipier, incluant les catégories,
+     * produits, boissons et sides disponibles.
+     *
+     * @return void
      */
     public function displayInterfaceEquipier()
     {
@@ -45,6 +48,34 @@ class EquipierController extends BaseController
             "listeProduit" => $listeProducts,
             'listeSide' => $listeSide,
             'listeBoissons' => $listeBoissons,
+        ]);
+    }
+    /**
+     * Affiche l'interface de gestion des commandes pour l'équipier, 
+     * montrant les commandes qui sont prêtes à être préparées.
+     *
+     * @return void
+     */
+    public function displayOrderInterface(){
+        $this->ensureStatus('EQUIPIER');
+        $listOrder = $this->detail_order->showOrderWithFilter('PREPARE');
+        return $this->render('equipier/order', [
+            'listOrder' => $listOrder,
+        ]);
+    }
+    /**
+     * Affiche l'interface de gestion avec les details d'une commande specifique
+     */
+    public function displayDetailOrder($number_order){
+        $this->ensureStatus('EQUIPIER');
+        $listOrder = $this->detail_order->showOrderWithFilter('PREPARE');
+        $detailOrder = $this->detail_order->showOrderDetail($number_order);
+        $order = new Orders();
+        $orderCurrent = $order->loadWithOrderNumber($number_order);
+        return $this->render('equipier/order', [
+            'listOrder' => $listOrder,
+            'detailOrder' => $detailOrder,
+            'orderCurrent' => $orderCurrent,
         ]);
     }
     /**
@@ -67,12 +98,16 @@ class EquipierController extends BaseController
         $this->ensureStatus('EQUIPIER');
         $orderId = $this->generateOrderId();
         $order = new Orders();
-        $_SESSION["order"] = $orderId;
-        $order->set('number_order', $orderId);
-        $order->set('statut', 'EN COURS DE COMMANDE');
-        $order->insert();
-        return json_encode($orderId);
-    }
+        if($this->orders->existe($orderId)){
+            return json_encode(['error' => 'Le numero de commande existe deja']);
+            }else{
+                $_SESSION["order"] = $orderId;
+                $order->set('number_order', $orderId);
+                $order->set('statut', 'EN COURS DE COMMANDE');
+                $order->insert();
+                return json_encode($orderId);
+            }
+        }
     /**
      * Ajouter les detail de la commande et insert en basse de donnée
      */
@@ -102,7 +137,7 @@ class EquipierController extends BaseController
                 if ($detailOrder->loadFromTab($input)) {
                     $detailOrder->set('id_order', $idOrder);
                     if ($detailOrder->insert()) {
-                        echo json_encode(['status' => 'success', 'message' => 'Données reçues', 'donnée' => $input]);
+                        echo json_encode(['statut' => 'success', 'message' => 'Données reçues', 'donnée' => $input]);
                     } else {
                         throw new Exception('insertion echoué en base de donnée');
                     }
@@ -150,7 +185,7 @@ class EquipierController extends BaseController
                 $id = $input['id'];
                 $detailOrder = new Detail_order($id);
                 if ($detailOrder->delete()) {
-                    echo json_encode(["status' => 'success', 'message' => 'l\'element a l\'id $id a éte supprimé"]);
+                    echo json_encode(["statut' => 'success', 'message' => 'l\'element a l\'id $id a éte supprimé"]);
                 } else {
                     throw new Exception('echec de la suppression');
                 }
@@ -183,14 +218,14 @@ class EquipierController extends BaseController
                 $order = new Orders();
                 $order->loadWithOrderNumber($_SESSION['order']);
                 $number_order = $_SESSION['order'];
-                $order->set('statut', 'EN PREPARATION');
+                $order->set('statut', 'A PREPARER');
                 $order->set('price', $input['price']);
                 if ($order->update()) {
                     echo json_encode([
                         'status' => 'success',
                         'message' => 'La commande a été validée',
                         'order' => $number_order,
-                        'etat' => "L'état est passé à 'EN PREPARATION'"
+                        'etat' => "L'état est passé à 'A PREPARER'"
                     ]);
                 } else {
                     throw new Exception('Échec de la validation');
@@ -233,6 +268,45 @@ class EquipierController extends BaseController
                     ]);
                 } else {
                     throw new Exception('Échec de l\'abandon');
+                }
+            } else {
+                throw new Exception('Order manquant');
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+    /**
+     * role :livrer une commande
+     */
+    public function deliveryOrder()
+    {
+        $this->ensureStatus('EQUIPIER');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(['status' => 'error', 'message' => 'Erreur de décodage JSON : ' . json_last_error_msg()]);
+            return;
+        }
+        try {
+            if (isset($input['order'])) {
+                $order = new Orders();
+                $order->loadWithOrderNumber($input['order']);
+                $number_order = $input['order'];
+                $order->set('statut', 'LIVRER');
+                if ($order->update()) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'La commande a été livré',
+                        'order' => $number_order,
+                        'etat' => "L'état est passé à 'LIVRER'"
+                    ]);
+                } else {
+                    throw new Exception('Échec de la modification de statut livrer');
                 }
             } else {
                 throw new Exception('Order manquant');

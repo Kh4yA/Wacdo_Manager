@@ -45,7 +45,7 @@ class AdminController extends BaseController
         $listeProducts = $this->products->listEtendue(['label' => $category], [], 'categories', 'categories_id', 'label', 'label');
         return $this->render('admin/products', [
             "listeCategories" => $listeCategories,
-            "listeProducts" => $listeProducts
+            "listeProducts" => $listeProducts,
         ]);
     }
     /**
@@ -82,7 +82,7 @@ class AdminController extends BaseController
         //Traitement de la photo
         // On verifie si le fichier n'est pas vide
         // on reccuperer le chemin relatif ou on enregistre les images
-        $chemin = PICTURE_PATH . $category . '/';
+        $chemin = PICTURE_PATH;
         $file = $_FILES["pictures"];
         $code = $file['error'];
         if ($code == UPLOAD_ERR_INI_SIZE or $code == UPLOAD_ERR_FORM_SIZE) {
@@ -108,7 +108,7 @@ class AdminController extends BaseController
             $fichier = md5(uniqid()) . '.' . $extension;
             if (move_uploaded_file($file["tmp_name"], $chemin . $fichier)) {
                 // Enregistrer le nom du fichier dans l'objet produit
-                $category === 'menus' ? $productCurrent->set('pictures','/' . $category . '/' . $fichier) : '';
+                $productCurrent->set('pictures','/' . $fichier);
             }
         } else {
             echo "Aucune photo n'a été téléchargée.";
@@ -123,6 +123,36 @@ class AdminController extends BaseController
     {
         $this->ensureStatus('ADMIN');
         $this->products->loadFromTab($_POST);
+                //Traitement de la photo
+        // On verifie si le fichier n'est pas vide
+        // on reccuperer le chemin relatif ou on enregistre les images
+        $chemin = PICTURE_PATH;
+        $file = $_FILES["pictures"];
+        $code = $file['error'];
+        if ($code == UPLOAD_ERR_INI_SIZE or $code == UPLOAD_ERR_FORM_SIZE) {
+            // Erreur : fichier trop gros
+            // traitement (message / template)
+            echo 'fichier trop grand';
+            exit;
+        } else if ($code != UPLOAD_ERR_OK) {
+            // Erreur : autre ereur technique
+            // traitement (message / template)
+            echo 'erreur technique' . $code;
+            exit;
+        }
+        if (!empty($file)) {
+            $img = $file['name'];
+            // Récupérer l'extension du fichier
+            $extension = pathinfo($img, PATHINFO_EXTENSION);
+            // Générer un nom de fichier unique
+            $fichier = md5(uniqid()) . '.' . $extension;
+            if (move_uploaded_file($file["tmp_name"], $chemin . $fichier)) {
+                // Enregistrer le nom du fichier dans l'objet produit
+                $this->products->set('pictures','/' . $fichier);
+            }
+        } else {
+            echo "Aucune photo n'a été téléchargée.";
+        }
         $this->products->insert();
         return $this->redirectToRoute("admin_produit");
     }
