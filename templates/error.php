@@ -1,3 +1,9 @@
+<?php
+// template qui affiche les erreur
+//param : $error (message a afficher)
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

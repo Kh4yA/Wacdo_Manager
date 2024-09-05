@@ -37,10 +37,10 @@
                 <tbody>
                     <?php foreach ($listOrder as $order) : ?>
                         <tr>
-                            <td><?= $order['number_order'] ?></td>
-                            <td><?= $order['date'] ?></td>
-                            <td><a href="/commande/detail/<?= $order['number_order'] ?>">detail</a></td>
-                            <td><?= $order['statut'] ?></td>
+                            <td><?= htmlentities($order['number_order']) ?></td>
+                            <td><?= htmlentities($order['date']) ?></td>
+                            <td><a href="/commande/detail/<?= htmlspecialchars($order['number_order']) ?>">detail</a></td>
+                            <td><?= htmlentities($order['statut']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -58,7 +58,7 @@
                             <p>Commande numéro</p>
                         </div>
                         <div>
-                            <p> <span class="font-size42px"><?=isset($orderCurrent) ? $orderCurrent->get('number_order') : ""?></span></p>
+                            <p> <span class="font-size42px"><?=isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : ""?></span></p>
                         </div>
                     </div>
                 </div>
@@ -74,18 +74,18 @@
                     ?>
                             <div class="menu-item flex space-between padding20px">
                                 <div class="flex item-center space-between">
-                                    <h3><?= $order['quantite'] ?><?= $order['libelle_product'] ?></h3>
+                                    <h3><?= htmlentities($order['quantite']) ?><?= htmlentities($order['libelle_product']) ?></h3>
                                 </div>
                                 <ul>
-                                    <li><?= $order['libelle_side'] ?></li>
-                                    <li><?= $order['libelle_boisson'] ?></li>
+                                    <li><?= htmlentities($order['libelle_side']) ?></li>
+                                    <li><?= htmlentities($order['libelle_boisson']) ?></li>
                                 </ul>
                             </div>
                         <?php
                         } else {
                         ?>
                             <div class="flex item-center space-between">
-                                <h3><?= $order['quantite'] ?> <?= $order['libelle_product'] ?></h3>
+                                <h3><?= htmlentities($order['quantite']) ?> <?= htmlentities($order['libelle_product']) ?></h3>
                             </div>
                         <?php
                         }
@@ -103,14 +103,14 @@
                             <p><b>TOTAL (ttc)</b></p>
                         </div>
                         <div class="price">
-                            <p><span class="font-size42px"><?=isset($orderCurrent) ? $orderCurrent->get('price') : ""?></span></p>
+                            <p><span class="font-size42px"><?=isset($orderCurrent) ? htmlentities($orderCurrent->get('price')) : ""?></span></p>
                         </div>
                     </div>
                     <div class="statut d-none">
                         <p>PAYÉ</p>
                     </div>
                     <div class="cart-btn flex space-between flex-wrap">
-                        <button class="btn-first" id="livre" data-number="<?=isset($orderCurrent) ? $orderCurrent->get('number_order') : ""?>">livrer</button>
+                        <button class="btn-first" id="livre" data-number="<?=isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : ""?>">livrer</button>
                     </div>
                 </div>
             </div>

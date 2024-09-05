@@ -16,7 +16,6 @@ use App\Controllers\APIController;
 use App\Controllers\ManagerController;
 use App\Controllers\EquipierController;
 use App\Exceptions\ErrorConnexion;
-use App\Exceptions\ErrorUploadFile;
 use App\Exceptions\ForbiddenPage;
 
 //definir une constante pour le router
@@ -25,12 +24,15 @@ define('PICTURE_PATH',__DIR__.'/public/wacdo/');
 
 $router = new Router();
 
-//Enregistremetnde mes routes
+//==============================================
+// ROUTES
+//==============================================
+// Route pour la page d'accueil
 $router->register('/', [HomeController::class, 'index']);
-
+// Route pour la page de connexion 
 $router->register('/connexion', [AccessController::class, 'verify_connexion']);
 $router->register('/deconnexion', [AccessController::class, 'deconnexion']);
-
+// Route pour la page de gestion des utilisateurs et des produis pour l'admin
 $router->register('/admin_produit', [AdminController::class, 'adminProductPage']);
 $router->register('/admin_produit/{category}', [AdminController::class, 'displayProductByCategory']);
 $router->register('/admin_produit/{category}/{id}', [AdminController::class, 'displayProductModifForm']);
@@ -40,11 +42,11 @@ $router->register('/admin_utilisateur', [AdminController::class, 'adminUserPage'
 $router->register('/admin_utilisateur/{id}', [AdminController::class, 'displayUserModifForm']);
 $router->register('/modifUser/{id}', [AdminController::class, 'saveModifUser']);
 $router->register('/addUser', [AdminController::class, 'addNewUser']);
-
+// routes l'interface du manager
 $router->register('/interface_manager', [ManagerController::class, 'displayInterfaceManager']);
 $router->register('/interface_manager/detail/{number_order}', [ManagerController::class, 'displayOrderDetail']);
 $router->register('/readyOrder', [ManagerController::class, 'readyOrder']);
-
+// route pour l'inteface de l'equipier
 $router->register('/interface_equipier', [EquipierController::class, 'displayInterfaceEquipier']);
 $router->register('/commandes', [EquipierController::class, 'displayOrderInterface']);
 $router->register('/commande/detail/{number_order}', [EquipierController::class, 'displayDetailOrder']);
@@ -55,13 +57,13 @@ $router->register('/deleteOrderDetail', [EquipierController::class, 'deleteOrder
 $router->register('/validateOrder', [EquipierController::class, 'validateOrder']);
 $router->register('/abandonOrder', [EquipierController::class, 'abandonOrder']);
 $router->register('/deliveryOrder', [EquipierController::class, 'deliveryOrder']);
-
-$router->register('/test', [TestController::class, 'testControl']);
-
+// route pour les API
 $router->register('/API_wacdo_categories', [APIController::class, 'createAPICategories']);
 $router->register('/API_wacdo_produits', [APIController::class, 'createAPIProducts']);
 $router->register('/API_wacdo', [APIController::class, 'addOrderDetailsWacdo']);
-
+// route du controlleur test
+$router->register('/test', [TestController::class, 'testControl']);
+// try catch pour capturer les erreurs
 try{
     echo $router->resolve(($_SERVER['REQUEST_URI']));
 }catch(RouteNotFound $e){

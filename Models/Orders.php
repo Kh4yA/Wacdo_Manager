@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Utils\_Model;
-
+/**
+ * Class qui geres les commandes
+ */
 class Orders extends _Model
 {
     protected $table = 'orders';

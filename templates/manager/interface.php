@@ -31,10 +31,10 @@
                 <tbody>
                     <?php foreach ($listOrder as $order) : ?>
                         <tr>
-                            <td><?= $order['number_order'] ?></td>
-                            <td><?= $order['date'] ?></td>
-                            <td><a href="/interface_manager/detail/<?= $order['number_order'] ?>">detail</a></td>
-                            <td><?= $order['statut'] ?></td>
+                            <td><?= htmlentities($order['number_order']) ?></td>
+                            <td><?= htmlentities($order['date']) ?></td>
+                            <td><a href="/interface_manager/detail/<?= htmlspecialchars($order['number_order']) ?>">detail</a></td>
+                            <td><?= htmlentities($order['statut']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -52,7 +52,7 @@
                             <p>Commande numéro</p>
                         </div>
                         <div>
-                            <p> <span class="font-size42px"><?php isset($orderCurrent) ? $orderCurrent->get('number_order') : '' ?></span></p>
+                            <p> <span class="font-size42px"><?= isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : '' ?></span></p>
                         </div>
                     </div>
                 </div>
@@ -72,10 +72,10 @@
                     ?>
                                 <div class="menu-item flex space-between padding-bottom20px">
                                     <div class="flex item-center space-between flex-wrap">
-                                        <h3 class=" width100"><?= $order['quantite'] ?> <?= ($order['size'] === 'BEST_OF') ? 'best of' : 'maxi best of'?> <?= $order['libelle_product'] ?></h3>
+                                        <h3 class=" width100"><?= htmlentities($order['quantite']) ?> <?= ($order['size'] === 'BEST_OF') ? 'best of' : 'maxi best of'?> <?= htmlentities($order['libelle_product']) ?></h3>
                                         <ul>
-                                            <li><?= $order['libelle_side'] ?></li>
-                                            <li><?= $order['libelle_boisson'] ?></li>
+                                            <li><?= htmlentities($order['libelle_side']) ?></li>
+                                            <li><?= htmlentities($order['libelle_boisson']) ?></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                             } else {
                             ?>
                                 <div class="flex item-center space-between padding-bottom20px">
-                                    <h3><?= $order['quantite'] ?> <?= $order['libelle_product'] ?></h3>
+                                    <h3><?= $order['quantite'] ?> <?= htmlentities($order['libelle_product']) ?></h3>
                                 </div>
                     <?php
                             }
@@ -94,23 +94,14 @@
                 <!-- Prix de la commande -->
                 <div class="order-price">
                     <div class="line"></div>
-                    <div class="flex space-between item-center padding20px">
-                        <div>
-                            <p><b>TOTAL (ttc)</b></p>
-                        </div>
-                        <div class="price">
-                            <p> <span class="font-size42px"><?= isset($orderCurrent) ? $orderCurrent->get('price') : '' ?></span></p>
-                        </div>
-                    </div>
                     <div class="statut d-none">
                         <p>PAYÉ</p>
                     </div>
                     <div class="cart-btn flex space-between flex-wrap">
-                        <button class="btn-first" id="prepare" data-order='<?= isset($orderCurrent) ? $orderCurrent->get('number_order') : '' ?>'>Préparer</button>
+                        <button class="btn-first" id="prepare" data-order='<?= isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : '' ?>'>Préparer</button>
                     </div>
                 </div>
             </div>
     </main>
 </body>
-
 </html>

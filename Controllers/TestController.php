@@ -9,6 +9,9 @@ use App\Models\Categories;
 use App\Models\Detail_order;
 use App\Controllers\BaseController;
 
+/**
+ * Controlleur pour gerer tous mes tests
+ */
 class TestController extends BaseController
 {
 
@@ -22,6 +25,8 @@ class TestController extends BaseController
 
     function __construct()
     {
+        $this->ensureStatus(['MANAGER','EQUIPIER','ADMIN']);
+
         if ($this->product === null) {
             $this->product = new Products();
         }

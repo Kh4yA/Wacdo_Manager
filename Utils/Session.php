@@ -4,6 +4,9 @@ namespace App\Utils;
 
 use App\Models\User;
 
+/**
+ * classe qui gere la seesion
+ */
 class Session
  {
     protected $userConnected;

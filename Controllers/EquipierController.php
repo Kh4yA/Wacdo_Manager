@@ -38,7 +38,7 @@ class EquipierController extends BaseController
      */
     public function displayInterfaceEquipier()
     {
-        $this->ensureStatus('EQUIPIER');
+        $this->ensureStatus(['MANAGER','EQUIPIER']);
         $listeCategories = $this->categories->listEtendue();
         $listeProducts = $this->products->listEtendue(["categories_id" => 1]);
         $listeBoissons = $this->products->listEtendue(['label' => 'boissons'], [], 'categories', 'categories_id', 'label', 'label');
@@ -57,7 +57,7 @@ class EquipierController extends BaseController
      * @return void
      */
     public function displayOrderInterface(){
-        $this->ensureStatus('EQUIPIER');
+        $this->ensureStatus(['EQUIPIER', 'MANAGER']);
         $listOrder = $this->detail_order->showOrderWithFilter('PREPARE');
         return $this->render('equipier/order', [
             'listOrder' => $listOrder,
@@ -114,9 +114,7 @@ class EquipierController extends BaseController
     public function addOrderDetails()
     {
         $this->ensureStatus('EQUIPIER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        $this->CORSHeaders();
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(200);
             exit;
@@ -174,10 +172,7 @@ class EquipierController extends BaseController
     public function deleteOrderDetail()
     {
         $this->ensureStatus('EQUIPIER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        $this->CORSHeaders();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         try {
@@ -202,10 +197,7 @@ class EquipierController extends BaseController
     public function validateOrder()
     {
         $this->ensureStatus('EQUIPIER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        $this->CORSHeaders();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -243,10 +235,7 @@ class EquipierController extends BaseController
     public function abandonOrder()
     {
         $this->ensureStatus('EQUIPIER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        $this->CORSHeaders();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -282,10 +271,7 @@ class EquipierController extends BaseController
     public function deliveryOrder()
     {
         $this->ensureStatus('EQUIPIER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        $this->CORSHeaders();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         if (json_last_error() !== JSON_ERROR_NONE) {

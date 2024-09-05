@@ -5,7 +5,9 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Models\Products;
 use App\Models\Categories;
-
+/**
+ * Gere l'utilasation coté admin avec les listes des produits et des utilisateurs
+ */
 class AdminController extends BaseController
 {
     private $products;

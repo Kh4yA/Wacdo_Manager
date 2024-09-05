@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Utils\_Model;
-use App\Utils\Session;
-
+/**
+ * class qui gere la table utilisateur en bdd
+ */
 class User extends _Model
 {
     protected $table = "user";

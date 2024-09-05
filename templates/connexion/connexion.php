@@ -1,3 +1,8 @@
+<?php
+// Template qui met en forme la le formulaire de connexion
+// Param : neant
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 

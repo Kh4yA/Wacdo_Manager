@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Exceptions;
-
+/**
+ * class qui retourne un code erreur 403
+ */
 class ForbiddenPage extends \Exception
 {
-    protected $message = 'La page que vous cherchez est interdite.';
+    protected $message = 'Vous n\'avez pas acces a cette page !.';
     protected $code = 403;
 }

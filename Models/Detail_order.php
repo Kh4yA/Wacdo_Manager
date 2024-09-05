@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Utils\_Model;
-
+/**
+ * gestion des details details des commandes
+ */
 class Detail_order extends _Model
 {
     protected $table = 'detail_order';
@@ -33,7 +35,7 @@ class Detail_order extends _Model
      */
     public function showOrderWithFilter($statut)
     {
-        $sql = "SELECT `orders`.`id`, `number_order`, `date`, `statut`, `price`, `user_id` FROM `orders` WHERE `statut` = :statut";
+        $sql = "SELECT `orders`.`id`, `number_order`, `date`, `statut`, `price`, `user_id` FROM `orders` WHERE `statut` = :statut LIMIT 20";
         $param = [':statut' => $statut];
         global $bdd;
         $req = $bdd->fetchAll($sql, $param);

@@ -1,3 +1,11 @@
+<?php
+// template qui gere l'interface equipier, qui met en forme la gestion de la prise de commande
+//param : $listeCategories(gerer en AJAX)
+//param : $listeBoissons(tableau indexé par l'id)
+//param : $listeSide(tableau indexé par l'id)
+//param : $listeProduits(gerer en AJAX)
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -44,7 +52,7 @@
                                 <?php
                                 foreach ($listeBoissons as $boisson) {
                                 ?>
-                                    <div class="card flex justify-center card-boisson" data-id=<?= $boisson->getId() ?>><img src="/public/wacdo<?= $boisson->get('pictures') ?>" alt=""></div>
+                                    <div class="card flex justify-center card-boisson" data-id=<?= $boisson->getId() ?>><img src="/public/wacdo<?= $boisson->get('pictures') ?>" alt="photo d'une boisson<?= $boisson->get('name') ?>"></div>
                                 <?php
                                 }
                                 ?>
@@ -54,7 +62,7 @@
                                 foreach ($listeSide as $side) {
                                     if ($side->getId() === 36 || $side->getId() === 39 || $side->getId() === 60) {
                                 ?>
-                                        <div class="card flex justify-center card-side" data-id=<?= $side->getId() ?>><img src="/public/wacdo<?= $side->get('pictures') ?>" alt=""></div>
+                                        <div class="card flex justify-center card-side" data-id=<?= $side->getId() ?>><img src="/public/wacdo<?= $side->get('pictures') ?>" alt="photo d'un accompagnement <?= $side->get('name') ?>"></div>
                                 <?php
                                     }
                                 }

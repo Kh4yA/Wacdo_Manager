@@ -1,3 +1,29 @@
+// =========================================================
+// SOMMAIRE
+// =========================================================
+// 1. Configuration des URL
+// 2. Configuration des variables
+// 3.1 Gestion des données produits
+// 3.2 Gestion des données categories
+// 4. Gestion AJAX
+//      Function *4.1* sendDataServer() Envoi les details de la commande au sereur
+//      Function *4.2* getDetailCommande() reccupere les detail de la commande
+//      Function *4.3* deleteArticleServer() supprime un article en bdd
+//      Function *4.4* abandonOrder() abandonne la commande
+//      Function *4.5* sendValidationOrder() envoi la validation de la commande
+//      Function *4.6* createOrder() creer une nouvelle commande en bdd
+// 5. Functions
+//      Function *5.1* isOrderLanched() verifie si une commande est lancé
+//      Function *5.2* cardSelected() ajoute la classe actice a la catre qui est séléctionné
+//      Function *5.3* constructTemplateCategories() construit le template aves les cartes categories
+//      Function *5.4* constructTemplateItem() construit le templates avec les cartes produits
+//      Function *5.5* constructOrderInfo() construit la parti avec les infos de la commandes
+//      Function *5.6* constructContentOrder() construit le contenu de la commande
+// 6. Ecouteur d'evenement
+
+// =========================================================
+// 1. Configuration des URL
+// =========================================================
 const API_BASE_URL = 'http://exam-back.mdaszczynski.mywebecom.ovh';
 const API_CATEGORIES_URL = `${API_BASE_URL}/API_wacdo_categories`;
 const API_PRODUCTS_URL = `${API_BASE_URL}/API_wacdo_produits`;
@@ -8,31 +34,18 @@ const API_DELETE_ARTICLE_URL = `${API_BASE_URL}/deleteOrderDetail`;
 const API_VALIDATE_ORDER_URL = `${API_BASE_URL}/validateOrder`;
 const API_ABANDON_ORDER_URL = `${API_BASE_URL}/abandonOrder`;
 
+// ==========================================================
+// 2. declaration des variables
+// ==========================================================
 const choiceCategorieEquipier = document.querySelector('.choice-categorie-equipier')
-let order_num = "";
-/**
- * verifie qu'une commande est lancé
- */
-function isOrderLaunched() {
-    if (order_num === "") {
-        alert('Vous devez créer une nouvelle commande !')
-        location.reload()
-    }
-}
-//Appel de la methode fetch pour traiter les données
-fetch(API_CATEGORIES_URL)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-    }).then(datas => {
-        console.log(datas);
-        construcTemplateCategory(datas)
-    })
-    .catch((error) => {
-        console.error('Erreur lors de la récupération des données des produits :', error);
-    })
+let order_num = ""; // creer un numero de commande (chainde de caractere vide par defaut)
+let isOrderEventCreated = false;  // Variable pour vérifier si l'événement est déjà attaché
+//déclaration de la variable price pour reccuperer le prix
+let price = 0;
+let statutOrder= ""
+// ==========================================================
+// 3.1 Gestions des données produits
+// ==========================================================
 /**
  * extraire la donnée, appel constructTamplateItem()
  * @param {string} category 
@@ -47,35 +60,30 @@ async function extractDatasProduits(category) {
         console.error('Erreur lors de la récupération des données des produits :', error);
     }
 }
-/**
- * fetch qui recupere le detail de la commande
- */
-async function getDetailCommande() {
-    try {
-        const response = await fetch(API_ORDER_DETAILS_URL)
-        const datas = await response.json();
-        await constructContentOrder(datas)
+// ==========================================================
+// 3.2 Gestion des données categories
+// ==========================================================
+//Appel de la methode fetch pour traiter les données
+fetch(API_CATEGORIES_URL)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    }).then(datas => {
         console.log(datas);
-    } catch (error) {
+        construcTemplateCategory(datas)
+    })
+    .catch((error) => {
         console.error('Erreur lors de la récupération des données des produits :', error);
-    }
-}
+    })
 
+// ==========================================================
+// 4. Gestions des appelles ajax
+// ==========================================================
 /**
- * Ajoute l'etat active a une carte
- * @param {string} selectorClass (selectaur de class au format ('.selectorClass'))
- */
-function cardSelected(selectorClass) {
-    let cards = document.querySelectorAll(selectorClass);
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            cards.forEach(otherCard => otherCard.classList.remove('active'));
-            card.classList.add('active');
-        });
-    });
-}
-/**
- * Envoi les donnéee au serveur 
+ * FUNCTION *4.1*
+ * Envoi les details de la commande au sereur
  * @param {} data 
  */
 async function sendDataServer(data) {
@@ -98,6 +106,21 @@ async function sendDataServer(data) {
     }
 }
 /**
+ * FUNCTION *4.2*
+ * fetch qui recupere le detail de la commande
+ */
+async function getDetailCommande() {
+    try {
+        const response = await fetch(API_ORDER_DETAILS_URL)
+        const datas = await response.json();
+        await constructContentOrder(datas)
+        console.log(datas);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données des produits :', error);
+    }
+}
+/**
+ * FUNCTION *4.3*
  * supprimer un article du server
  * @param int id
  */
@@ -121,7 +144,9 @@ async function deleteArticleServer(id) {
     }
 }
 /**
+ * FUNCTION *4.4*
  * role : abandonner une commande
+ *  @param int id de la commande a annulé
  */
 async function abandonOrder(order_num) {
     console.log('Corps de la requête envoyé :', JSON.stringify({ order: order_num }));
@@ -143,7 +168,9 @@ async function abandonOrder(order_num) {
     }
 }
 /**
+ * FUNCTION *4.5*
  * role : envoyer la validation de la commande au serveur
+ * @param int price 
  */
 async function sendValidationOrder(price) {
     console.log('Corps de la requête envoyé :', JSON.stringify({ price: price }));
@@ -165,10 +192,8 @@ async function sendValidationOrder(price) {
         console.error('Erreur lors de la validation de la commande :', error);
     }
 }
-////***************  CREATION D'UNE COMMANDE  ***************/////
-// Variable pour vérifier si l'événement est déjà attaché
-let isOrderEventCreated = false;
 /**
+ * FUNCTION *4.6*
  * creer un nouvveau numero de commande 
  */
 function createOrder() {
@@ -195,8 +220,35 @@ function createOrder() {
 }
 createOrder();
 
-////***************    ***************/////
+// ==========================================================
+// 5. FUNCTIONS
+// ==========================================================
 /**
+ * FUNCTION *5.1*
+ * verifie qu'une commande est lancé
+ */
+function isOrderLaunched() {
+    if (order_num === "") {
+        alert('Vous devez créer une nouvelle commande !')
+        location.reload()
+    }
+}
+/**
+ * FUNCTION *5.2*
+ * Ajoute l'etat active a une carte
+ * @param {string} selectorClass (selectaur de class au format ('.selectorClass'))
+ */
+function cardSelected(selectorClass) {
+    let cards = document.querySelectorAll(selectorClass);
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            cards.forEach(otherCard => otherCard.classList.remove('active'));
+            card.classList.add('active');
+        });
+    });
+}
+/**
+ * FUNCTION *5.3*
  * role : genere les boutons categories
  * @param {*} $data 
  */
@@ -218,6 +270,7 @@ function construcTemplateCategory(data) {
     })
 }
 /**
+ *  FUNCTION *5.4*
  * Role : construire le template qui contient les cartes produits
  * @param {array} datas 
  * @param {string} category 
@@ -308,6 +361,7 @@ async function construcTemplateItem(datas, category) {
     })
 }
 /**
+ * FUNCTION *5.5*
  * affiche le numero de commande
  * @param {string} data (numero de commande)
  */
@@ -321,11 +375,8 @@ function constructOrderInfo(data) {
         <div><p>Commande numéro</p></div>
         <div><p><span class="font-size42px">${data}</span></p></div>    `;
 }
-//déclaration de la variable price pour reccuperer le prix
-let price = 0;
-let statutOrder= ""
-
 /**
+ * FUNCTION *5.6*
  * Remplit les informations du panier
  * @returns {void}
  */
@@ -405,7 +456,9 @@ function constructContentOrder(datas = []) {
     const boxPrice = document.querySelector('.price');
     boxPrice.innerHTML = `${price.toFixed(2)} €`; // Affichage du total
 }
-
+// ==========================================================
+// 6. Ecouteur d'evenement
+// ==========================================================
 // Gestion du bouton de pay
 const statutPay = document.querySelector('.statut')
 const btnPay = document.getElementById('pay');

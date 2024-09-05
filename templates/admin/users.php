@@ -1,7 +1,7 @@
 <?php
     //template users
     //role : met en forme la page utilisateurs section admin
-    // param : 
+    // param : $listUser(tableau indexé par l'id)
 ?>
 
 <!DOCTYPE html>
@@ -97,13 +97,13 @@
                     foreach ($listUser as $user) {
                     ?>
                         <tr>
-                            <td><?= $user->get('id_connexion') ?></td>
-                            <td><?= $user->get('last_name') ?></td>
-                            <td><?= $user->get('first_name') ?></td>
-                            <td><?= $user->get('mail') ?></td>
-                            <td><?= $user->get('create_at') ?></td>
-                            <td><?= $user->get('status') ?></td>
-                            <td><?= $user->get('actif') ?></td>
+                            <td><?= htmlentities($user->get('id_connexion')) ?></td>
+                            <td><?= htmlentities($user->get('last_name')) ?></td>
+                            <td><?= htmlentities($user->get('first_name')) ?></td>
+                            <td><?= htmlentities($user->get('mail')) ?></td>
+                            <td><?= htmlentities($user->get('create_at')) ?></td>
+                            <td><?= htmlentities($user->get('status')) ?></td>
+                            <td><?= htmlentities($user->get('actif')) ?></td>
                             <td class="flex justify-center gap20px"><a href="/admin_utilisateur/<?= htmlspecialchars($user->getId()) ?>">details</a><a href="">supprimer</a></td>
                         </tr>
                     <?php

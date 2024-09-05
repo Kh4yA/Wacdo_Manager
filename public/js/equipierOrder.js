@@ -1,3 +1,5 @@
+/**************** script pour les commandes dans le template equipier  ************************/
+// gestion url
 const API_BASE_URL = 'http://exam-back.mdaszczynski.mywebecom.ovh';
 const API_DELIVERY_ORDER_URL = `${API_BASE_URL}/deliveryOrder`;
 
@@ -25,8 +27,6 @@ async function passOrderToDelivery(order_num) {
     }
 
 }
-
-
 //gestion du btn livrer
 const btnLivrer = document.getElementById('livre');
 btnLivrer.addEventListener('click', () => {

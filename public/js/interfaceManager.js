@@ -1,6 +1,6 @@
+//************************* script lié au template manager ***************************/
 const API_BASE_URL = 'http://exam-back.mdaszczynski.mywebecom.ovh';
 const API_READY_ORDER_URL = `${API_BASE_URL}/readyOrder`;
-
 /**
  * role : passer une commande a livrer, envoi uen request en methode POST a l'API 
  * @param  int order_num
@@ -25,8 +25,6 @@ async function passOrderToReady(order_num) {
     }
 
 }
-
-
 //gestion du btn livrer
 const btnPrepare = document.getElementById('prepare');
 btnPrepare.addEventListener('click', () => {

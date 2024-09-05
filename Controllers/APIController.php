@@ -8,7 +8,9 @@ use App\Models\Categories;
 use App\Models\Detail_order;
 use App\Controllers\BaseController;
 use App\Models\Orders;
-
+/**
+ * class qui gere les API
+ */
 class APIController extends BaseController
 {
     protected $products;
@@ -24,15 +26,13 @@ class APIController extends BaseController
         $this->categories = new Orders();
     }
     /**
-     * role : Creer une api pour les categories
-     * @return array
+     * Crée un endpoint API pour récupérer les catégories.
+     * @return string JSON contenant la liste des catégories.
      */
     public function createAPICategories()
     {
         // Autoriser les requêtes provenant de n'importe quel domaine
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        $this->CORSHeaders();
         $categories = new Categories();
         $listeCategories = $categories->listEtendue();
         $result = [];
@@ -46,14 +46,12 @@ class APIController extends BaseController
         return json_encode($result);
     }
     /**
-     * role : Créer une API pour les produits
-     * @return void
+     * Crée un endpoint API pour récupérer les produits par catégorie.
+     * @return string JSON contenant les produits organisés par catégorie.
      */
     public function createAPIProducts()
     {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        $this->CORSHeaders();
         $categories = ['menus', 'burgers', 'boissons', 'frites', 'encas', 'desserts', 'sauces', 'salades', 'wraps'];
         $result = [];
         foreach ($categories as $category) {
@@ -74,11 +72,13 @@ class APIController extends BaseController
         // Encodage en JSON
         return json_encode($result);
     }
+        /**
+     * Crée un endpoint API pour ajouter les détails d'une commande.
+     * @return void Renvoie un JSON indiquant le succès ou l'échec de l'opération.
+     */
     public function addOrderDetailsWacdo()
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        $this->CORSHeaders();
     
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(200);
@@ -106,12 +106,8 @@ class APIController extends BaseController
                 foreach ($input['composition'] as $item) {
                     if (isset($item)) { 
                         $detailOrder = new Detail_order();
-                        // $detailOrder->set('id_order', $id);
-                        // $detailOrder->set('id_produit', $item['id_produit']);
-                        // $detailOrder->set('id_boisson', $item['id_boisson']);
-                        // $detailOrder->set('id_side', $item['id_side']);
-                        // $detailOrder->set('quantite', $item['quantite']);
-                        // $detailOrder->set('size', $item['size']);
+                        $detailOrder->set('id_order', $id);
+                        $detailOrder->loadFromTab($item);
                         $detailOrder->insert();
                     } else {
                         throw new Exception('Détail de la commande invalide, ID manquant.');

@@ -30,17 +30,31 @@ class BaseController
         header("Location: /{$viewPath}");
     }
     /**
-     * Role verifier qu'un utilisateur et connecter et s'assure qu'il a le role necessaire
-     * @param string $statut ( Le statut a verfier )
+     * Vérifie qu'un utilisateur est connecté et s'assure qu'il a un des statuts requis.
+     * @param array|string $statuts (Le ou les statuts à vérifier)
      * @return string la route de redirection
-     * @throws ForbiddenPage Si l'utilisateur n'a pas le statut requis.
+     * @throws ForbiddenPage Si l'utilisateur n'a pas un des statuts requis.
      */
-    protected function ensureStatus($statut)
+    protected function ensureStatus($statuts)
     {
-        if(!Session::isconnected()){
+        if (!Session::isconnected()) {
             return $this->redirectToRoute('/');
-        }elseif ( Session::session_userconnect()->get('status') !== $statut) {
+        }
+        if (!is_array($statuts)) {
+            $statuts = [$statuts];
+        }
+        if (!in_array(Session::session_userconnect()->get('status'), $statuts)) {
             throw new ForbiddenPage();
         }
     }
+        /**
+     * Définit les en-têtes CORS pour autoriser l'accès à l'API.
+     */
+    protected function CORSHeaders()
+    {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    }
+
 }

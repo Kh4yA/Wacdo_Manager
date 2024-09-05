@@ -77,10 +77,7 @@ class ManagerController extends BaseController
     public function readyOrder()
     {
         $this->ensureStatus('MANAGER');
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        $this->CORSHeaders();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
         if (json_last_error() !== JSON_ERROR_NONE) {

@@ -4,6 +4,11 @@ namespace App\Router;
 
 use App\Exceptions\RouteNotFound;
 
+/**
+ * Class Router
+ * class est responsable de l'enregistrement des routes et de la résolution des URI pour exécuter les actions associées.
+ * @package App\Router
+ */
 class Router
 {
     private $routes = [];
@@ -15,9 +20,13 @@ class Router
         }
     }
     /**
-     * Résout l'URI et exécute l'action associée
-     * @param string $uri (chemin à traiter)
-     * @return mixed (résultat de l'appel)
+     * Résout l'URI fournie et exécute l'action associée à la route correspondante.
+     * Cette méthode prend l'URI, trouve la route correspondante et exécute l'action. 
+     * Si l'action est une fonction callable, elle est exécutée directement.
+     * Si l'action est un tableau, elle instancie la classe et appelle la méthode correspondante avec les arguments fournis.
+     * @param string $uri L'URI à traiter (par exemple, '/home', '/users/123').
+     * @throws RouteNotFound Si aucune route correspondante n'est trouvée pour l'URI.
+     * @return mixed Résultat de l'exécution de l'action associée à la route.
      */
     public function resolve(string $uri)
     {

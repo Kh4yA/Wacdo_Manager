@@ -39,6 +39,10 @@ body{
   }
   a{
     text-decoration: none;
+    color: var(--black-color);
+  }
+  a:visited{
+    color: var(--black-color);
   }
   body {
     font-family: var(--font-primary-regular);
@@ -290,7 +294,6 @@ th, td{
 }
 tbody tr:hover{
   background-color: var(--grey-ligth);
-  cursor: pointer;
 }
 /*form*/
 form{
@@ -336,7 +339,8 @@ object-fit: contain;
   width: calc(70% - 5px);
   margin-right: 5px;
   background-color: var(--white-color);
-  border: 1px solid var(--black-color)
+  border: 1px solid var(--black-color);
+  overflow: scroll;
 }
 .choice-interface-equipier{
   width: 100%;
@@ -423,7 +427,7 @@ object-fit: contain;
  .order-price {
   position: absolute;
   width: calc(100% - 40px);
-  height: 20%;
+  height: 10%;
   bottom: 10px;
 }
 .cart-btn{
@@ -431,7 +435,7 @@ object-fit: contain;
 }
 .order-content{
   width: 100%;
-  height: calc(65% - 30px);
+  height: 75%;
   overflow: scroll;
 }
 .menu{
