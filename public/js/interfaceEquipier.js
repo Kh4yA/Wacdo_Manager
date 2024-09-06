@@ -225,7 +225,7 @@ createOrder();
 // ==========================================================
 /**
  * FUNCTION *5.1*
- * verifie qu'une commande est lancé
+ * verifie qu'une commande est lancé sinon empeche d'autre action
  */
 function isOrderLaunched() {
     if (order_num === "") {

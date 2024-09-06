@@ -37,7 +37,7 @@ class AdminController extends BaseController
     /**
      * role : Afficher les produits selectionner par categories
      * @param string $category (category trier par le label)
-     * @return object 
+     * @return string 
      */
     public function displayProductByCategory($category)
     {
@@ -54,7 +54,7 @@ class AdminController extends BaseController
      * role : Afficher les produits selectionner par categories
      * @param string $category (category trier par le label)
      * @param int $id (id du produit selectionner)
-     * @return object 
+     * @return string
      */
     public function displayProductModifForm($category, $id)
     {
@@ -73,7 +73,7 @@ class AdminController extends BaseController
     /**
      * role : modifie le produit selectionner
      * @param int $id
-     * @return object 
+     * @return string 
      */
     public function saveModifProduct($id)
     {

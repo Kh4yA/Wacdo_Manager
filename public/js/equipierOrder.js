@@ -4,7 +4,7 @@ const API_BASE_URL = 'http://exam-back.mdaszczynski.mywebecom.ovh';
 const API_DELIVERY_ORDER_URL = `${API_BASE_URL}/deliveryOrder`;
 
 /**
- * role : passer une commande a livrer
+ * role : passer une commande au statut 'livrer'
  * @param  int order_num
  */
 async function passOrderToDelivery(order_num) {
@@ -27,7 +27,7 @@ async function passOrderToDelivery(order_num) {
     }
 
 }
-//gestion du btn livrer
+//gestion du btn livrer au click on appel la fonction
 const btnLivrer = document.getElementById('livre');
 btnLivrer.addEventListener('click', () => {
     console.log("btn livrer cliqué");

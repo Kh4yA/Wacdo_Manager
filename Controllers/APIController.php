@@ -8,6 +8,7 @@ use App\Models\Categories;
 use App\Models\Detail_order;
 use App\Controllers\BaseController;
 use App\Models\Orders;
+
 /**
  * class qui gere les API
  */
@@ -63,7 +64,7 @@ class APIController extends BaseController
                     "id" => $value->getId(),
                     "nom" => $value->get('name'),
                     "prix" => $value->get('price'),
-                    "image" => "http://exam-back.mdaszczynski.mywebecom.ovh/public/wacdo".$value->get('pictures')
+                    "image" => "http://exam-back.mdaszczynski.mywebecom.ovh/public/wacdo" . $value->get('pictures')
                 ];
             }
             // Ajouter les produits à la catégorie correspondante
@@ -72,22 +73,21 @@ class APIController extends BaseController
         // Encodage en JSON
         return json_encode($result);
     }
-        /**
+    /**
      * Crée un endpoint API pour ajouter les détails d'une commande.
      * @return void Renvoie un JSON indiquant le succès ou l'échec de l'opération.
      */
     public function addOrderDetailsWacdo()
     {
         $this->CORSHeaders();
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            error_log('Requête OPTIONS reçue. Réponse avec code 200 envoyée.');
             http_response_code(200);
             exit;
         }
-    
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
-    
         try {
             if (json_last_error() === JSON_ERROR_NONE) {
                 if (!isset($input['order']) || !isset($input['restauration']) || !isset($input['composition']) || !is_array($input['composition'])) {
@@ -104,7 +104,7 @@ class APIController extends BaseController
                 // Insertion des détails de la commande
                 $item = [];
                 foreach ($input['composition'] as $item) {
-                    if (isset($item)) { 
+                    if (isset($item)) {
                         $detailOrder = new Detail_order();
                         $detailOrder->set('id_order', $id);
                         $detailOrder->loadFromTab($item);
@@ -113,7 +113,7 @@ class APIController extends BaseController
                         throw new Exception('Détail de la commande invalide, ID manquant.');
                     }
                 }
-                echo json_encode(['status' => 'success', 'message' => 'Commande ajoutée avec succès', 'order_id' => $id, 'data' => $item]);
+                echo json_encode(['status' => 'success', 'message' => 'Commande ajoutée avec succès', 'order_id' => $id]);
             } else {
                 throw new Exception('JSON reçu invalide: ' . json_last_error_msg());
             }
