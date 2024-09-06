@@ -33,9 +33,10 @@ class Detail_order extends _Model
      * role : affiche le detail d'une commande
      * @param string ($statut) statut a afficher
      */
+    
     public function showOrderWithFilter($statut)
     {
-        $sql = "SELECT `orders`.`id`, `number_order`, `date`, `statut`, `price`, `user_id` FROM `orders` WHERE `statut` = :statut LIMIT 20";
+        $sql = "SELECT `orders`.`id`, `number_order`, `date`, `statut`, `price`, `user_id` FROM `orders` WHERE `statut` = :statut LIMIT 50";
         $param = [':statut' => $statut];
         global $bdd;
         $req = $bdd->fetchAll($sql, $param);

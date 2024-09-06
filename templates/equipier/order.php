@@ -13,7 +13,7 @@
     <link rel="icon" href="/public/wacdo/images/logo.png" type="image/png">
 
     <script src="/public/js/equipierOrder.js" defer ></script>
-    <title>Interface manager</title>
+    <title>Interface equipier</title>
 </head>
 
 <body>
@@ -103,14 +103,14 @@
                             <p><b>TOTAL (ttc)</b></p>
                         </div>
                         <div class="price">
-                            <p><span class="font-size42px"><?=isset($orderCurrent) ? htmlentities($orderCurrent->get('price')) : ""?></span></p>
+                            <p><span class="font-size42px"><?=htmlentities(isset($orderCurrent)) ? htmlentities($orderCurrent->get('price')) : ""?></span></p>
                         </div>
                     </div>
                     <div class="statut d-none">
                         <p>PAYÉ</p>
                     </div>
                     <div class="cart-btn flex space-between flex-wrap">
-                        <button class="btn-first" id="livre" data-number="<?=isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : ""?>">livrer</button>
+                        <button class="btn-first" id="livre" data-number="<?=htmlentities(isset($orderCurrent)) ? htmlentities($orderCurrent->get('number_order')) : ""?>">livrer</button>
                     </div>
                 </div>
             </div>

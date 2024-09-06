@@ -6,7 +6,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -121,16 +121,16 @@
             </table>
         </div>
         <div class="form-container">
-            <form action="/modifProduct/<?= isset($productCurrent) ? $productCurrent->getId() : '' ?>" method="POST" class="flex item-center space-between" enctype="multipart/form-data">
+            <form action="/modifProduct/<?= htmlentities(isset($productCurrent)) ? htmlentities($productCurrent->getId()) : '' ?>" method="POST" class="flex item-center space-between" enctype="multipart/form-data">
                 <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
-                <input type="hidden" name="category" value=<?= isset($productCurrent) ? $productCurrent->get('category') : '' ?>>
+                <input type="hidden" name="category" value=<?= isset($productCurrent) ? htmlentities($productCurrent->get('category')) : '' ?>>
                 <div>
                     <label for="name">Nom :</label>
-                    <input type="text" name="name" id="name" value="<?= isset($productCurrent) ? htmlentities($productCurrent->get('name')) : '' ?>">
+                    <input type="text" name="name" id="name" value="<?= htmlentities(isset($productCurrent)) ? htmlentities($productCurrent->get('name')) : '' ?>">
                 </div>
                 <div>
                     <label for="price">Prix en(€) :</label>
-                    <input type="text" name="price" id="price" value="<?= isset($productCurrent) ? htmlentities($productCurrent->get('price')) : '' ?>">
+                    <input type="text" name="price" id="price" value="<?= htmlentities(isset($productCurrent)) ? htmlentities($productCurrent->get('price')) : '' ?>">
                 </div>
                 <div class="flex">
                     <label for="pictures">Image :</label>
@@ -144,7 +144,7 @@
                 </div>
                 <div>
                     <label for="">Description :</label>
-                    <textarea name="" id="" cols="30" rows="5"></textarea value="<?= isset($productCurrent) ? htmlentities($productCurrent->get('description')) : '' ?>">
+                    <textarea name="" id="" cols="30" rows="5"></textarea value="<?= htmlentities(isset($productCurrent)) ? htmlentities($productCurrent->get('description')) : '' ?>">
                 </div>
                 <div class="flex">
                 <label for="dispo">Dispo :</label>
@@ -152,7 +152,7 @@
                     <label for="1">oui</label>
                     <input type="radio" name="dispo" id="1" value="1" 
                         <?php
-                        if (isset($productCurrent) && $productCurrent->get('dispo') === "1") {
+                        if (htmlentities(isset($productCurrent)) && htmlentities($productCurrent->get('dispo')) === "1") {
                             echo 'checked';
                         }
                         ?>
@@ -162,7 +162,7 @@
                     <label for="0">non</label>
                     <input type="radio" name="dispo" id="0" value="0" 
                         <?php
-                        if (isset($productCurrent) && $productCurrent->get('dispo') === "0") {
+                        if (htmlentities(isset($productCurrent)) && htmlentities($productCurrent->get('dispo')) === "0") {
                             echo 'checked';
                         }
                         ?>

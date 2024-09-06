@@ -38,7 +38,7 @@ class Router
             if (preg_match('/^' . $routePattern . '$/', $path, $matches)) {
                 array_shift($matches);
                 if (is_callable($action) && !is_array($action)) {
-                    return call_user_func_array($action, $matches);
+                    return call_user_func($action, $matches);
                 }
                 if (is_array($action) && count($action) === 2) {
                     list($className, $method) = $action;

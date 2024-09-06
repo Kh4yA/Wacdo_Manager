@@ -52,7 +52,7 @@
                             <p>Commande numéro</p>
                         </div>
                         <div>
-                            <p> <span class="font-size42px"><?= isset($orderCurrent) ? htmlentities($orderCurrent->get('number_order')) : '' ?></span></p>
+                            <p> <span class="font-size42px"><?= htmlentities(isset($orderCurrent)) ? htmlentities($orderCurrent->get('number_order')) : '' ?></span></p>
                         </div>
                     </div>
                 </div>

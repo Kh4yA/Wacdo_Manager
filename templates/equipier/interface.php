@@ -52,7 +52,7 @@
                                 <?php
                                 foreach ($listeBoissons as $boisson) {
                                 ?>
-                                    <div class="card flex justify-center card-boisson" data-id=<?= $boisson->getId() ?>><img src="/public/wacdo<?= $boisson->get('pictures') ?>" alt="photo d'une boisson<?= $boisson->get('name') ?>"></div>
+                                    <div class="card flex justify-center card-boisson" data-id=<?= htmlentities($boisson->getId()) ?>><img src="/public/wacdo<?= $boisson->get('pictures') ?>" alt="photo d'une boisson<?= htmlentities($boisson->get('name')) ?>"></div>
                                 <?php
                                 }
                                 ?>
@@ -62,7 +62,7 @@
                                 foreach ($listeSide as $side) {
                                     if ($side->getId() === 36 || $side->getId() === 39 || $side->getId() === 60) {
                                 ?>
-                                        <div class="card flex justify-center card-side" data-id=<?= $side->getId() ?>><img src="/public/wacdo<?= $side->get('pictures') ?>" alt="photo d'un accompagnement <?= $side->get('name') ?>"></div>
+                                        <div class="card flex justify-center card-side" data-id=<?= htmlentities($side->getId()) ?>><img src="/public/wacdo<?= $side->get('pictures') ?>" alt="photo d'un accompagnement <?= htmlentities($side->get('name')) ?>"></div>
                                 <?php
                                     }
                                 }

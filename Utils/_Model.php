@@ -72,7 +72,7 @@ class _Model
     {
         foreach ($this->fields as $fieldName) {
             if (isset($tab[$fieldName])) {
-                $this->values[$fieldName] = $tab[$fieldName];
+                $this->values[$fieldName] = htmlentities($tab[$fieldName]);
             }
         }
         return true;

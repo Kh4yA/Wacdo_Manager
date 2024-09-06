@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./../../public/css/style.css">
     <link rel="icon" href="/public/wacdo/images/logo.png" type="image/png">
 
-    <title>Document</title>
+    <title>Bienvenue chez wacdo</title>
 </head>
 
 <body>

@@ -92,11 +92,6 @@ class AdminController extends BaseController
             // traitement (message / template)
             echo 'fichier trop grand';
             exit;
-        } else if ($code != UPLOAD_ERR_OK) {
-            // Erreur : autre ereur technique
-            // traitement (message / template)
-            echo 'erreur technique' . $code;
-            exit;
         }
         if (!empty($file)) {
             // On supprime l'ancienne photo du répertoire si elle existe
