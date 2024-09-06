@@ -430,6 +430,10 @@ object-fit: contain;
   height: 10%;
   bottom: 10px;
 }
+.order-price-equipier{
+  height: 20%;
+}
+
 .cart-btn{
   padding: 0 10px;
 }
@@ -437,6 +441,9 @@ object-fit: contain;
   width: 100%;
   height: 75%;
   overflow: scroll;
+}
+.order-content-equipier{
+height: 65%;
 }
 .menu{
   padding: 10px 20px;
@@ -479,6 +486,9 @@ object-fit: contain;
   .choice-products-equipier{
     width: 100%;
     height: 70vh;
+  }
+  .statut{
+    font-size: 24px;
   }
   .equipier-container{
     flex-wrap: wrap;

@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="line"></div>
-            <div class="order-content">
+            <div class="order-content order-content-equipier">
                 <!-- Menu -->
                 <div class="menu padding-bottom20px">
                     <?php
@@ -96,7 +96,7 @@
                     ?>
                 </div>
                 <!-- Prix de la commande -->
-                <div class="order-price">
+                <div class="order-price order-price-equipier">
                     <div class="line"></div>
                     <div class="flex space-between item-center padding20px">
                         <div>

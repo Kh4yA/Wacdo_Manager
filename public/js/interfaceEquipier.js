@@ -462,19 +462,23 @@ function constructContentOrder(datas = []) {
 // Gestion du bouton de pay
 const statutPay = document.querySelector('.statut')
 const btnPay = document.getElementById('pay');
+const btnAbandon = document.getElementById('abandon');
 btnPay.addEventListener('click', () => {
     console.log("btn pay cliqué");
     if (order_num != "") {
         console.log(`order_num est rempli ${order_num}`);
         sendValidationOrder(price);
         btnPay.classList.add('d-none')
+        btnAbandon.classList.add('d-none')
         statutPay.classList.remove('d-none')
+        setTimeout(() => {
+            location.reload()
+        }, 2000);
     } else {
         console.log(`order_num est vide`);
     }
 });
 //Gestion du bouton abandonner
-const btnAbandon = document.getElementById('abandon');
 btnAbandon.addEventListener('click', () => {
     console.log("btn abandon cliqué");
     abandonOrder(order_num)
